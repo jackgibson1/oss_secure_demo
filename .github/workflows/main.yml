@@ -31,7 +31,8 @@ jobs:
           pip install -r flask_app/requirements.txt
 
       - name: Build Docker image
-        run: docker build . --file Dockerfile -t flask_app:$(date +%s)
+        run: docker build . --file Dockerfile -t flask_app:latest ./flask_app
+        #run: docker build . --file Dockerfile -t flask_app:$(date +%s)
         #run: docker build . --file Dockerfile -t flask_app:$(date +%s) ./flask_app
         #run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
         
