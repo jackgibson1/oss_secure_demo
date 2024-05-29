@@ -36,6 +36,9 @@ jobs:
         #run: docker build . --file Dockerfile -t flask_app:$(date +%s)
         #run: docker build . --file Dockerfile -t flask_app:$(date +%s) ./flask_app
         #run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      
+      - name: Save Docker image
+          docker save flask_app > flask_app.tar
         
       - name: Push Docker image to Cloudsmith
         uses: cloudsmith-io/action@v0.6.6
@@ -45,5 +48,5 @@ jobs:
           format: docker
           owner: demo
           repo: ciara-test
-          file: flask_app:latest
+          file: flask_app.tar
           summary: "Docker image for Flask app"
