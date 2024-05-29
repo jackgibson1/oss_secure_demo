@@ -31,7 +31,7 @@ jobs:
           pip install -r flask_app/requirements.txt
 
       - name: Build Docker image
-        run: docker build -t your-username/your-repository:latest ./flask_app
+        run: docker build -t flask_app:latest ./flask_app
       
       - name: Push Docker image to Cloudsmith
         uses: cloudsmith-io/action@v0.6.6
