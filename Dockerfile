@@ -5,8 +5,8 @@ FROM python:3.8-slim
 WORKDIR /flask_app
 
 # Copy the current directory contents into the container at /app
-COPY app.py /flask_app
-COPY requirements.txt /flask_app
+COPY flask_app/app.py /flask_app
+COPY flask_app/requirements.txt /flask_app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
