@@ -38,7 +38,7 @@ jobs:
         #run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
       
       - name: Save Docker image
-          docker save flask_app > flask_app.tar
+        run: docker save flask_app > flask_app.tar
         
       - name: Push Docker image to Cloudsmith
         uses: cloudsmith-io/action@v0.6.6
