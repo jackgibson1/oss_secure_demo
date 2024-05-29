@@ -1,0 +1,45 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+permissions:
+    contents: read  # This is required for actions/checkout
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          . venv/bin/activate
+          pip install -r flask_app/requirements.txt
+
+      - name: Build Docker image
+        run: docker build -t your-username/your-repository:latest ./flask_app
+      
+      - name: Push Docker image to Cloudsmith
+        uses: cloudsmith-io/action@v0.6.6
+        with:
+          api-key: ${{ secrets.CLOUDSMITH_API_KEY }}
+          command: push
+          format: docker
+          owner: demo
+          repo: ciara-test
+          file: image-file.tar.gz
+          summary: "Docker image for Flask app"
