@@ -45,5 +45,5 @@ jobs:
           format: docker
           owner: demo
           repo: ciara-test
-          file: image-file.tar.gz
+          file: flask_app:latest
           summary: "Docker image for Flask app"
