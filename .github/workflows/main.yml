@@ -24,12 +24,6 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install dependencies
-        run: |
-          python -m venv venv
-          . venv/bin/activate
-          pip install -r flask_app/requirements.txt
-
       - name: Build Docker image
         run: docker build -t docker.cloudsmith.io/demo/ciara-test/flask_app:latest -f Dockerfile .
 
