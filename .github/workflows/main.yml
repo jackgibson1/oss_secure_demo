@@ -31,7 +31,7 @@ jobs:
           pip install -r flask_app/requirements.txt
 
       - name: Build Docker image
-        run: docker build -t flask_app:latest -f Dockerfile .
+        run: docker build -t docker.cloudsmith.io/demo/ciara-test/flask_app:latest -f Dockerfile .
 
       - name: Login to Cloudsmith Docker Registry
         env:
