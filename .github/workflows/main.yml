@@ -1,4 +1,3 @@
-name: CI/CD Pipeline
 
 on:
   push:
@@ -7,12 +6,12 @@ on:
   pull_request:
     branches:
       - main
+
 permissions:
-    contents: read  # This is required for actions/checkout
+  contents: read  # This is required for actions/checkout
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -26,25 +25,13 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t docker.cloudsmith.io/demo/ciara-test/flask_app:latest -f Dockerfile .
-      - name: Build Docker image
-        run: docker build -t docker.cloudsmith.io/demo/ciara-test/flask_app:latest -f Dockerfile .
 
-      #- name: Login to Cloudsmith Docker Registry
-      #  env:
-      #    CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
-      #  run: echo $CLOUDSMITH_API_KEY | docker login docker.cloudsmith.io -u $CLOUDSMITH_API_KEY --password-stdin
-        
-      - uses: docker/login-action@v1
-        name: Authenticate with Docker
+      - name: Authenticate with Cloudsmith Docker Registry
+        uses: docker/login-action@v2
         with:
           registry: docker.cloudsmith.io
-          #username: ${{ secrets.CLOUDSMITH_USERNAME }}
           username: "demo/ciara-test"
           password: ${{ secrets.CLOUDSMITH_API_KEY }}
-    #  - name: Login to Cloudsmith Docker Registry
-    #    env:
-    #      CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
-    #    run: echo $CLOUDSMITH_API_KEY | docker login docker.cloudsmith.io -u $CLOUDSMITH_API_KEY --password-stdin
 
-    #  - name: Push Docker image to Cloudsmith
-    #    run: docker push docker.cloudsmith.io/demo/ciara-test/flask_app:latest
+      - name: Push Docker image to Cloudsmith
+        run: docker push docker.cloudsmith.io/demo/ciara-test/flask_app:latest
