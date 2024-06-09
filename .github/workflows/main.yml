@@ -35,3 +35,15 @@ jobs:
 
       - name: Push Docker image to Cloudsmith
         run: docker push docker.cloudsmith.io/demo/ciara-test/flask_app:latest
+
+      - name: Anchore SBOM Action
+        uses: anchore/sbom-action@v0.16.0
+        id: sbom
+        with:
+          image: docker.cloudsmith.io/demo/ciara-test/flask_app:latest
+          artifact-name: sbom
+          format: spdx-json
+          upload-artifact: true
+          # output-file: sbom.spdx.json
+          #dependency-snapshot: ${{ inputs.sbom-snapshot-enable }}
+
