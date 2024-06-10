@@ -9,3 +9,6 @@ updates:
     directory: "/flask_app" # Location of package manifests
     schedule:
       interval: "daily"
+    commit-message:
+      prefix: "deps"
+    open-pull-requests-limit: 10
