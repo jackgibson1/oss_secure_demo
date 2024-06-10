@@ -54,7 +54,8 @@ jobs:
           output-file: 'sbom.spdx.json'
 
       - name: Publish SBOM
-        run: cosign attach attestation ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --attestation sbom.spdx.json
+        #run: cosign attach attestation ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --attestation sbom.spdx.json
+        run: cosign attest --predicate sbom.spdx.json ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           
      # - name: Attest
      #   uses: actions/attest-sbom@v1
