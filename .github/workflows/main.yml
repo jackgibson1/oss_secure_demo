@@ -65,5 +65,5 @@ jobs:
      #     sbom-path: 'sbom.spdx.json'
      #     push-to-registry: true
 
-      - name: Sign the images with GitHub OIDC Token
-        run: cosign sign --yes docker.cloudsmith.io/demo/ciara-test/flask_app:latest
+     # - name: Sign the images with GitHub OIDC Token
+     #   run: cosign sign --yes docker.cloudsmith.io/demo/ciara-test/flask_app:latest
