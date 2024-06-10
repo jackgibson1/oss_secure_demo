@@ -14,7 +14,7 @@ permissions:
   packages: write
 env:
    REGISTRY: docker.cloudsmith.io
-   IMAGE_NAME: demo/ciara-test/flask_app:latest
+   IMAGE_NAME: demo/ciara-test/flask_app
    #${{ github.repository }}
 
 jobs:
