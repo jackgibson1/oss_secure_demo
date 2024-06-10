@@ -32,7 +32,7 @@ jobs:
         run: docker push docker.cloudsmith.io/demo/ciara-test/flask_app:latest
 
       - name: Sign image
-        uses: sigstore/cosign-installer@3.5.0        
+        uses: sigstore/cosign-installer@v3.5.0
       - name: Anchore SBOM Action
         uses: anchore/sbom-action@v0
         id: sbom
