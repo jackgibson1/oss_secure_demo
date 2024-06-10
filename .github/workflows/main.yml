@@ -46,4 +46,5 @@ jobs:
       - name: Sign the images with GitHub OIDC Token
         run: cosign sign --yes docker.cloudsmith.io/demo/ciara-test/flask_app:latest
 
-
+      - name: Verify image
+        run: cosign verify --certificate-identity ccarey@cloudsmith.io --certificate-oidc-issuer https://accounts.google.com docker.cloudsmith.io/demo/ciara-test/flask_app:latest
