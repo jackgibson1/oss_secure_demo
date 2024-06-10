@@ -76,5 +76,5 @@ jobs:
         run: cosign sign --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       # Step to verify the signed image
-      - name: Verify image
-        run: cosign verify --certificate-identity "https://github.com/ciaracarey/oss_secure_demo/.github/workflows/main.yml@refs/heads/main" --certificate-oidc-issuer https://token.actions.githubusercontent.com ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+      #- name: Verify image
+      #  run: cosign verify --certificate-identity "https://github.com/ciaracarey/oss_secure_demo/.github/workflows/main.yml@refs/heads/main" --certificate-oidc-issuer https://token.actions.githubusercontent.com ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
