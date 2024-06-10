@@ -39,3 +39,5 @@ jobs:
         with:
           image: docker.cloudsmith.io/demo/ciara-test/flask_app:latest
           format: spdx-json
+          upload-artifact: true
+          dependency-snapshot: ${{ inputs.sbom-snapshot-enable }}
