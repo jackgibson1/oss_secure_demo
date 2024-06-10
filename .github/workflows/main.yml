@@ -1,3 +1,4 @@
+name: CI/CD Pipeline
 
 on:
   push:
@@ -12,10 +13,10 @@ permissions:
   contents: read
   attestations: write
   packages: write
+
 env:
-   REGISTRY: docker.cloudsmith.io
-   IMAGE_NAME: demo/ciara-test/flask_app
-   #${{ github.repository }}
+  REGISTRY: docker.cloudsmith.io
+  IMAGE_NAME: demo/ciara-test/flask_app
 
 jobs:
   build:
@@ -34,7 +35,7 @@ jobs:
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.5.0
 
-      # Step to authenticate with Cloudsmith Container Registry
+      # Step to authenticate with Cloudsmith Docker Registry
       - name: Authenticate with Cloudsmith Docker Registry
         uses: docker/login-action@v2
         with:
@@ -50,7 +51,13 @@ jobs:
           context: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-    
+
+      # Step to get the image digest
+      - name: Get image digest
+        id: get-digest
+        run: |
+          echo "IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest)" >> $GITHUB_ENV
+
       # Step to generate the SBOM (Software Bill of Materials)
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
@@ -62,13 +69,12 @@ jobs:
 
       # Step to publish the SBOM as an attestation
       - name: Publish SBOM
-        #run: cosign attach attestation ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --attestation sbom.spdx.json
-        run: cosign attest --yes --predicate sbom.spdx.json ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        run: cosign attest --yes --predicate sbom.spdx.json ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ env.IMAGE_DIGEST }}
 
       # Step to sign the Docker image with GitHub OIDC Token
       - name: Sign the images with GitHub OIDC Token
-        run: cosign sign --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        run: cosign sign --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ env.IMAGE_DIGEST }}
 
-      # (Optional) Step to verify the image
+      # Step to verify the signed image
       - name: Verify image
-        run: cosign verify --certificate-identity "https://github.com/<your_username>/<your_repo>/.github/workflows/<workflow_name>@refs/heads/main" --certificate-oidc-issuer https://token.actions.githubusercontent.com ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        run: cosign verify --certificate-identity "https://github.com/ciaracarey/oss_secure_demo/.github/workflows/main.yml@refs/heads/main" --certificate-oidc-issuer https://token.actions.githubusercontent.com ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ env.IMAGE_DIGEST }}
