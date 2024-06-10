@@ -52,15 +52,18 @@ jobs:
           image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           format: spdx-json
           output-file: 'sbom.spdx.json'
+
+      - name: Publish SBOM
+        run: cosign attach attestation ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --attestation sbom.spdx.json
           
-      - name: Attest
-        uses: actions/attest-sbom@v1
-        id: attest
-        with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.push.outputs.digest }}
-          sbom-path: 'sbom.spdx.json'
-          push-to-registry: true
+     # - name: Attest
+     #   uses: actions/attest-sbom@v1
+     #   id: attest
+     #   with:
+     #     subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+     #     subject-digest: ${{ steps.push.outputs.digest }}
+     #     sbom-path: 'sbom.spdx.json'
+     #     push-to-registry: true
 
       - name: Sign the images with GitHub OIDC Token
         run: cosign sign --yes docker.cloudsmith.io/demo/ciara-test/flask_app:latest
