@@ -36,10 +36,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.CLOUDSMITH_USER_NAME }}
           password: ${{ secrets.CLOUDSMITH_API_KEY }}
-                  
-      #- name: Push Docker image to Cloudsmith
-      #  run: docker push docker.cloudsmith.io/demo/ciara-test/flask_app:latest
-        
+          
       - name: Build and push image
         id: push
         uses: docker/build-push-action@v5.0.0
@@ -67,14 +64,3 @@ jobs:
 
       - name: Sign the images with GitHub OIDC Token
         run: cosign sign --yes docker.cloudsmith.io/demo/ciara-test/flask_app:latest
-       
-      #- name: Attach SBOM to Docker Image
-      #  run: |
-          #sbom_file=$(find . -name "*.spdx.json")
-          #cosign attach sbom --sbom $sbom_file docker.cloudsmith.io/demo/ciara-test/flask_app:latest
-          #cosign attach sbom --sbom latest.spdx docker.cloudsmith.io/demo/ciara-test/flask_app:latest
-          #cosign attach attestation docker.cloudsmith.io/demo/ciara-test/flask_app:latest --attestation $ANCHORE_SBOM_ACTION_PRIOR_ARTIFACT
-          #cosign attach sbom --sbom latest.spdx gcr.io/$(gcloud config get-value project)/alpine:latest # get the digest from the output
-          
-      #- name: Verify image
-      #  run: cosign verify --certificate-identity ccarey@cloudsmith.io --certificate-oidc-issuer https://accounts.google.com docker.cloudsmith.io/demo/ciara-test/flask_app:latest
