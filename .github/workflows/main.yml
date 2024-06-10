@@ -46,5 +46,10 @@ jobs:
       - name: Sign the images with GitHub OIDC Token
         run: cosign sign --yes docker.cloudsmith.io/demo/ciara-test/flask_app:latest
 
-      - name: Verify image
-        run: cosign verify --certificate-identity ccarey@cloudsmith.io --certificate-oidc-issuer https://accounts.google.com docker.cloudsmith.io/demo/ciara-test/flask_app:latest
+      - name: Attach SBOM to Docker Image
+        run: |
+          sbom_file=$(find . -name "*.spdx.json")
+          cosign attach sbom --sbom $sbom_file docker.cloudsmith.io/demo/ciara-test/flask_app:latest
+
+      #- name: Verify image
+      #  run: cosign verify --certificate-identity ccarey@cloudsmith.io --certificate-oidc-issuer https://accounts.google.com docker.cloudsmith.io/demo/ciara-test/flask_app:latest
