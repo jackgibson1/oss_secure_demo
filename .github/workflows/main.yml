@@ -22,21 +22,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step to checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Step to build the Docker image
       - name: Build Docker image
         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
+
+      # Step to install cosign
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.5.0
-        
+
+      # Step to authenticate with Cloudsmith Container Registry
       - name: Authenticate with Cloudsmith Docker Registry
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.CLOUDSMITH_USER_NAME }}
           password: ${{ secrets.CLOUDSMITH_API_KEY }}
-          
+
+      # Step to build and push the Docker image to Cloudsmith
       - name: Build and push image
         id: push
         uses: docker/build-push-action@v5.0.0
@@ -44,7 +50,8 @@ jobs:
           context: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-
+    
+      # Step to generate the SBOM (Software Bill of Materials)
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
         id: sbom
@@ -53,11 +60,15 @@ jobs:
           format: spdx-json
           output-file: 'sbom.spdx.json'
 
+      # Step to publish the SBOM as an attestation
       - name: Publish SBOM
         #run: cosign attach attestation ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --attestation sbom.spdx.json
         run: cosign attest --yes --predicate sbom.spdx.json ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-     
+
+      # Step to sign the Docker image with GitHub OIDC Token
       - name: Sign the images with GitHub OIDC Token
         run: cosign sign --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
-     
+      # (Optional) Step to verify the image
+      - name: Verify image
+        run: cosign verify --certificate-identity "https://github.com/<your_username>/<your_repo>/.github/workflows/<workflow_name>@refs/heads/main" --certificate-oidc-issuer https://token.actions.githubusercontent.com ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
