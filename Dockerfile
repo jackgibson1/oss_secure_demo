@@ -13,8 +13,11 @@ ARG CLOUDSMITH_USERNAME
 ARG CLOUDSMITH_API_KEY
 RUN echo "machine dl.cloudsmith.io\nlogin ${CLOUDSMITH_USERNAME}\npassword ${CLOUDSMITH_API_KEY}" > ~/.netrc
 
+# Set the PIP_INDEX_URL environment variable
+ENV PIP_INDEX_URL=https://${CLOUDSMITH_USERNAME}:${CLOUDSMITH_API_KEY}@dl.cloudsmith.io/basic/demo/ciara-test/python/simple/
+
 # Install any needed packages specified in requirements.txt using the Cloudsmith repository
-RUN pip install --no-cache-dir -r requirements.txt --index-url https://dl.cloudsmith.io/basic/demo/ciara-test/python/simple/
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
