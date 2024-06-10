@@ -29,7 +29,8 @@ jobs:
 
       # Step to build the Docker image
       - name: Build Docker image
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
+        #run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
+        run: docker build --build-arg CLOUDSMITH_USERNAME=${{ secrets.CLOUDSMITH_USER_NAME }} --build-arg CLOUDSMITH_API_KEY=${{ secrets.CLOUDSMITH_API_KEY }} -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -f Dockerfile .
 
       # Step to install cosign
       - name: Install cosign
