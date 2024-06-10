@@ -69,7 +69,7 @@ jobs:
 
       # Step to publish the SBOM as an attestation
       - name: Publish SBOM
-        run: cosign attest --yes --predicate sbom.spdx.json ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ env.IMAGE_DIGEST }}
+        run: cosign attest --yes --predicate sbom.spdx.json ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       # Step to sign the Docker image with GitHub OIDC Token
       - name: Sign the images with GitHub OIDC Token
