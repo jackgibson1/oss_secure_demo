@@ -22,8 +22,7 @@ password: ${CLOUDSMITH_API_KEY}\n" > ~/.pypirc
 # Install any needed packages specified in requirements.txt using the Cloudsmith repository
 #RUN pip install --no-cache-dir -r requirements.txt --extra-index-url https://python.cloudsmith.io/demo/ciara-test/
 #RUN pip install --no-cache-dir -r requirements.txt --index-url https://python.cloudsmith.io/demo/ciara-test/
-RUN pip install --no-cache-dir -r requirements.txt --index-url https://dl.cloudsmith.io/public/demo/ciara-test/python/simple/
-
+RUN pip install -r requirements.txt --index-url https://python.cloudsmith.io/demo/ciara-test/
 
 
 # Install any needed packages specified in requirements.txt
