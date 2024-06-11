@@ -48,7 +48,7 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           build-args: |
-            CLOUDSMITH_ENTITLEMENT_TOKEN={{ secrets.CLOUDSMITH_ENTITLEMENT_TOKEN }}
+            CLOUDSMITH_ENTITLEMENT_TOKEN=${{ secrets.CLOUDSMITH_ENTITLEMENT_TOKEN }}
 
       # Step to get the image digest
       - name: Get image digest
