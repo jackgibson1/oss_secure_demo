@@ -16,7 +16,4 @@ jobs:
 
     - name: Verify image
       run: |
-        cosign verify \
-          --certificate-identity "https://github.com/ciaracarey/oss_secure_demo/.github/workflows/main.yml@refs/heads/main" \ 
-          --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-          docker.cloudsmith.io/demo/ciara-test/flask_app:latest
+        cosign verify     --certificate-identity "https://github.com/ciaracarey/oss_secure_demo/.github/workflows/main.yml@refs/heads/main"     --certificate-oidc-issuer https://token.actions.githubusercontent.com     docker.cloudsmith.io/demo/ciara-test/flask_app:latest
