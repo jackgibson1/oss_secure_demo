@@ -8,8 +8,8 @@ on:
 
 env:
   REGISTRY: docker.cloudsmith.io
-  IMAGE_NAME: demo/ciara-test/flask_app
-  CERT_ID: https://github.com/ciaracarey/oss_secure_demo/.github/workflows/main.yml@refs/heads/main
+  IMAGE_NAME: demo/ciara-test/flask_app # OSS_DEMO_INPUTS: Update to {org_name}/{repo_name}/flask_app
+  CERT_ID: https://github.com/ciaracarey/oss_secure_demo/.github/workflows/main.yml@refs/heads/main # OSS_DEMO_INPUTS: Update to GitHib username
   CERT_OIDC_ISSUER: https://token.actions.githubusercontent.com
 
 jobs:
