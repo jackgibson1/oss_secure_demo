@@ -11,7 +11,7 @@ COPY flask_app/requirements.txt /flask_app
 ARG CLOUDSMITH_ENTITLEMENT_TOKEN
 
 # Set the PIP_INDEX_URL environment variable.
-ENV PIP_INDEX_URL=https://dl.cloudsmith.io/{CLOUDSMITH_ENTITLEMENT_TOKEN}/jack-test-org/jack-test-repo/python/simple/
+ENV PIP_INDEX_URL=https://dl.cloudsmith.io/${CLOUDSMITH_ENTITLEMENT_TOKEN}/jack-test-org/jack-test-repo/python/simple/
 
 # Install any needed packages specified in requirements.txt using the Cloudsmith repository.
 RUN pip install --no-cache-dir -r requirements.txt
