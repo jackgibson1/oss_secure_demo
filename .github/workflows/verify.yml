@@ -6,14 +6,27 @@ on:
     types:
       - completed
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   verify-and-extract:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     steps:
+    - name: Set up OIDC Token
+      id: token
+      run: echo "Token setup complete"
+
     - name: Install cosign
       uses: sigstore/cosign-installer@v3.5.0
 
     - name: Verify image
-      run: cosign verify --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+      run: |
+        cosign verify \
+          --certificate-identity "https://github.com/ciaracarey/oss_secure_demo/.github/workflows/main.yml@refs/heads/main" \
+          --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+          docker.cloudsmith.io/demo/ciara-test/flask_app:latest
+
+
