@@ -1,0 +1,20 @@
+Copy code
+name: Verify and Extract SBOM
+
+on:
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types:
+      - completed
+
+jobs:
+  verify-and-extract:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+    - name: Install cosign
+      uses: sigstore/cosign-installer@v3.5.0
+
+    - name: Verify image
+      run: cosign verify --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
